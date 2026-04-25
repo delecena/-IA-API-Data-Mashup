@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Results for {{ query }}</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <script>
+    function showLoading() {
+        document.getElementById('loading-overlay').style.display = 'flex';
+        
+        const btn = document.querySelector('.search-wrapper button');
+        btn.disabled = true;
+        btn.innerText = "Loading...";
+    }
+    </script>
+</head>
+<body>
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <p>Mashing up API data...</p>
+    </div>
+    <div class="container">
+        <header>
+            <a href="{% url 'home' %}">← Back to Search</a>
+            <form method="GET" action="{% url 'movie_mashup' %}" class="search-wrapper" onsubmit="showLoading()">
+                <input type="text" name="title" placeholder="Search for a movie..." required>
+                <button type="submit">Search</button>
+            </form>
+            <h1>Results for "{{ query }}"</h1>
+        </header>
+
+        {% if results %}
+            <div class="results-grid">
+                {% for movie in results %}
+                    <div class="movie-card" style="margin-bottom: 20px; border: 1px solid #ddd; padding: 15px; border-radius: 8px;">
+                        <div class="card-header">
+                            <h2>{{ movie.title }}</h2>
+                            <span class="badge {{ movie.status_class }}">{{ movie.status }}</span>
+                        </div>
+                        
+                        <div class="card-grid">
+                            <div class="section">
+                                <h3>Production Data (TMDB)</h3>
+                                <p><strong>Released:</strong> {{ movie.release_date }}</p>
+                                <p><strong>Popularity:</strong> {{ movie.popularity }}</p>
+                            </div>
+                            <div class="section">
+                                <h3>Critical Insights (OMDb)</h3>
+                                <p><strong>Awards:</strong> {{ movie.awards }}</p>
+                                <p><strong>Box Office:</strong> {{ movie.box_office }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+        {% else %}
+            <div class="error-box">
+                <h2>No Data Found</h2>
+                <p>We couldn't mash up data for "{{ query }}".</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

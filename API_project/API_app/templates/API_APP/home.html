@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Mashup - Search</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <script>
+    function showLoading() {
+        document.getElementById('loading-overlay').style.display = 'flex';
+        
+        const btn = document.querySelector('.search-wrapper button');
+        btn.disabled = true;
+        btn.innerText = "Loading...";
+    }
+    </script>
+</head>
+<body>
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <p>Mashing up API data...</p>
+    </div>
+    <div class="hero">
+        <h1>API Data Mashup</h1>
+        <h2>This demonstrates how systems connect, exchange data, and produce meaningful outputs using TMDB and OMDb APIs.</h2>
+        
+        <form method="GET" action="{% url 'movie_mashup' %}" class="search-wrapper" onsubmit="showLoading()">
+            <input type="text" name="title" placeholder="Search for a movie..." required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+</body>
+</html>
