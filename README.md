@@ -50,4 +50,4 @@ Missing Popularity Data: If TMDb does not provide a popularity score for a speci
 ## AI Disclosure
 - Helped with css
 - Helped with explaining APIs. How it's used and how it works
-- Defined most of the limitations 
+- Helped with explaining the limitations 
